@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 头部 start -->
-    <CourseHeader></CourseHeader>
+    <PageHeader></PageHeader>
     <!-- 头部 end -->
 
     <!-- 轮播图 start -->
@@ -31,22 +31,21 @@
 </template>
 
 <script>
-import CourseHeader from '../components/CourseHeader.vue';
+import PageHeader from "../components/PageHeader.vue";
 import Carousel from "../components/Carousel";
 import CourseList from "../components/CourseList";
 
 export default {
   name: "index",
   components: {
+    PageHeader,
     Carousel,
     CourseList,
-    CourseHeader,
   },
 };
 </script>
 
 <style lang="less" scoped>
-
 @main-width: 1200px;
 
 // 课程
