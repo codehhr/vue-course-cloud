@@ -7,7 +7,7 @@ import Antd from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
 Vue.use(Antd);
 
-Vue.axios = axios;
+Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;
 
 new Vue({
