@@ -29,7 +29,7 @@ export default {
   name: "CourseList",
   data() {
     return {
-      courseApi: "http://wkt.myhope365.com/weChat/applet/course/list/type",
+      courseApi: `${this.$domain}/weChat/applet/course/list/type`,
       courseList: [
         // example
         {
