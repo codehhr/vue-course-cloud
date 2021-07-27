@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Index from "../views/Index";
+import ExclusiveCourse from "../components/ExclusiveCourse";
 
 Vue.use(VueRouter);
 
@@ -15,6 +16,11 @@ const routes = [
     path: "/",
     name: "Index",
     component: Index,
+  },
+  {
+    path: "/ExclusiveCourse",
+    name: "ExclusiveCourse",
+    component: ExclusiveCourse,
   },
   {
     path: "/about",
