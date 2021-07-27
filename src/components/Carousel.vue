@@ -38,13 +38,18 @@ export default {
   methods: {
     // 请求轮播图 start
     renderSlide() {
-      this.$axios.get(`${this.slideApi}?number=${this.number}`).then((res) => {
-        if (res.data.code == 0) {
-          this.slideList = res.data.data;
-        } else {
-          return;
-        }
-      });
+      this.$axios
+        .get(`${this.slideApi}?number=${this.number}`)
+        .then((res) => {
+          if (res.data.code == 0) {
+            this.slideList = res.data.data;
+          } else {
+            return;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     // 请求轮播图 end
   },
