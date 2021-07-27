@@ -1,5 +1,9 @@
 <template>
   <div>
+    <!-- 头部 start -->
+    <CourseHeader></CourseHeader>
+    <!-- 头部 end -->
+
     <!-- 轮播图 start -->
     <Carousel></Carousel>
     <!-- 轮播图 end -->
@@ -27,6 +31,7 @@
 </template>
 
 <script>
+import CourseHeader from '../components/CourseHeader.vue';
 import Carousel from "../components/Carousel";
 import CourseList from "../components/CourseList";
 
@@ -35,11 +40,13 @@ export default {
   components: {
     Carousel,
     CourseList,
+    CourseHeader,
   },
 };
 </script>
 
 <style lang="less" scoped>
+
 @main-width: 1200px;
 
 // 课程
