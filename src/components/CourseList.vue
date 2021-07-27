@@ -25,8 +25,6 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   name: "CourseList",
   data() {
@@ -82,7 +80,7 @@ export default {
       formData.append("type", this.type);
       formData.append("pageNum", this.pageNum);
       formData.append("pageSize", this.pageSize);
-      axios.post(this.courseApi, formData).then((res) => {
+      this.$axios.post(this.courseApi, formData).then((res) => {
         this.courseList = res.data.rows;
       });
     },
