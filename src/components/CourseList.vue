@@ -1,24 +1,36 @@
 <template>
   <div class="course">
+    <!-- 课程标题 -->
     <slot name="course-title"></slot>
+    <!-- 课程列表 -->
     <div class="course-list">
       <div
         class="course-list-item"
         v-for="(item, index) in courseList"
         :key="index"
       >
-        <!-- <router-link tag="div" :to="item.courseId"> -->
-        <!-- coverFileUrl start -->
-        <div class="coverFileUrl">
-          <img :src="item.coverFileUrl" alt="" />
-        </div>
-        <!-- coverFileUrl end -->
-        <p class="courseTitle">{{ item.courseTitle }}</p>
-        <p class="dec">
-          共 {{ item.subSectionNum }} 节课 |
-          {{ item.participationsCount }} 人报名
-        </p>
-        <!-- </router-link> -->
+        <router-link
+          :to="{ name: 'CourseDetail', params: { id: item.courseId } }"
+        >
+          <!-- coverFileUrl start -->
+          <div class="coverFileUrl">
+            <img :src="item.coverFileUrl" alt="" />
+          </div>
+          <!-- coverFileUrl end -->
+          <p class="courseTitle">{{ item.courseTitle }}</p>
+          <p class="dec">
+            共 {{ item.subSectionNum }} 节课 |
+            {{ item.participationsCount }} 人报名
+          </p>
+          <p class="free-course" v-if="item.isFree == 1">免费</p>
+          <p class="discount-course" v-else>
+            <span class="discount-price">{{ item.discountPrice }}</span>
+            <span class="course-price">{{ item.coursePrice }}</span>
+            <a-tag class="discount-desc" color="orange">
+              {{ item.discountDesc }}
+            </a-tag>
+          </p>
+        </router-link>
       </div>
     </div>
   </div>
@@ -92,6 +104,13 @@ export default {
 </script>
 
 <style scoped lang="less">
+@main-color: #00cf8c;
+@course-list-item-width: 224px;
+@course-list-item-height: 204px;
+@course-list-item-p-course-title-color: #000000;
+@course-list-item-p-free-course-font-size: 16px;
+@discount-price-color: #ff4500;
+
 .course {
   .course-list {
     display: flex;
@@ -100,12 +119,13 @@ export default {
     align-items: center;
     justify-content: flex-start;
     .course-list-item {
-      margin: 0 4px;
-      width: 232px;
-      height: 204px;
+      margin: 0 8px;
+      width: @course-list-item-width;
+      height: @course-list-item-height;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+
       .coverFileUrl {
         height: 122px;
         overflow: hidden;
@@ -116,6 +136,33 @@ export default {
           &:hover {
             transform: scale(1.1);
           }
+        }
+      }
+      p {
+        margin: 3px 0;
+        color: #888888;
+        text-align: left;
+      }
+      p.courseTitle {
+        color: @course-list-item-p-course-title-color;
+      }
+      p.free-course {
+        color: @main-color;
+        font-size: @course-list-item-p-free-course-font-size;
+      }
+      p.discount-course {
+        overflow: hidden;
+        .discount-price {
+          margin-right: 4px;
+          color: @discount-price-color;
+          font-weight: 500;
+        }
+        .course-price {
+          text-decoration: line-through;
+          font-size: 12px;
+        }
+        .discount-desc {
+          float: right;
         }
       }
     }
