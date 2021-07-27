@@ -37,6 +37,10 @@
       </CourseList>
     </div>
     <!-- 课程列表 end -->
+
+    <!-- 友情链接 start -->
+    <PageFooter></PageFooter>
+    <!-- 友情链接 end -->
   </div>
 </template>
 
@@ -45,10 +49,12 @@ import PageHeader from "../components/PageHeader.vue";
 import Carousel from "../components/Carousel";
 import CourseList from "../components/CourseList";
 import LiveCourse from "../components/LiveCourse";
+import PageFooter from "../components/PageFooter";
 
 export default {
   name: "index",
   components: {
+    PageFooter,
     PageHeader,
     Carousel,
     CourseList,
