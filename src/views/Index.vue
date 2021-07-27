@@ -8,8 +8,16 @@
     <Carousel></Carousel>
     <!-- 轮播图 end -->
 
-    <LiveCourse></LiveCourse>
-    
+    <!-- 直播课程 start -->
+    <LiveCourse>
+      <template v-slot:live-course-title>
+        <div>
+          <h1>直播课程</h1>
+        </div>
+      </template>
+    </LiveCourse>
+    <!-- 直播课程 end -->
+
     <!-- 课程列表 start -->
     <div class="all-course-list">
       <CourseList page-size="10" type="free">
@@ -44,7 +52,7 @@ export default {
     PageHeader,
     Carousel,
     CourseList,
-    LiveCourse
+    LiveCourse,
   },
 };
 </script>
