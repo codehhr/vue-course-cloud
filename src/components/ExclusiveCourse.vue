@@ -8,8 +8,4 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
-h1 {
-  margin: 100px auto;
-}
-</style>
+<style scoped lang="less"></style>
