@@ -1,10 +1,10 @@
 <template>
-  <a-carousel arrows>
+  <a-carousel arrows autoplay>
     <div
       slot="prevArrow"
       :slot-scope="'props'"
       class="custom-slick-arrow"
-      style="left: 10px;zIndex: 1"
+      style="left: 10px;"
     >
       <a-icon type="left-circle" />
     </div>
@@ -16,44 +16,79 @@
     >
       <a-icon type="right-circle" />
     </div>
-    <div><h3>1</h3></div>
-    <div><h3>2</h3></div>
-    <div><h3>3</h3></div>
-    <div><h3>4</h3></div>
+    <div
+      class="slide-item"
+      v-for="(item, index) in slideList"
+      :key="index"
+      :style="'background: url(' + item.imgUrlPc + ') center center no-repeat'"
+    ></div>
   </a-carousel>
 </template>
 
 <script>
 export default {
   name: "Carousel",
+  data() {
+    return {
+      slideApi: `${this.$domain}/weChat/applet/course/banner/list`,
+      number: "4",
+      slideList: [],
+    };
+  },
+  methods: {
+    // 请求轮播图 start
+    renderSlide() {
+      this.$axios.get(`${this.slideApi}?number=${this.number}`).then((res) => {
+        if (res.data.code == 0) {
+          this.slideList = res.data.data;
+        } else {
+          return;
+        }
+      });
+    },
+    // 请求轮播图 end
+  },
+  created() {
+    this.renderSlide();
+  },
 };
 </script>
 
 <style scoped>
 /* 轮播图 start */
+.ant-carousel {
+  height: 400px;
+}
+.ant-carousel >>> .slick-arrow {
+  width: 40px;
+  height: 40px;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+.ant-carousel >>> .slick-arrow:nth-of-type(1) {
+  background: url(../assets/prev.png) center center no-repeat;
+}
+
+.ant-carousel >>> .slick-arrow:nth-last-of-type(1) {
+  background: url(../assets/next.png) center center no-repeat;
+}
+
+.ant-carousel >>> .slick-arrow {
+  background-size: 20px 40px !important;
+}
+
 .ant-carousel >>> .slick-dots {
   height: auto;
 }
-.ant-carousel >>> .slick-slide img {
-  border: 5px solid #fff;
-  display: block;
-  margin: auto;
-  max-width: 80%;
-}
-.ant-carousel >>> .slick-thumb {
-  bottom: -45px;
-}
-.ant-carousel >>> .slick-thumb li {
-  width: 60px;
-  height: 45px;
-}
-.ant-carousel >>> .slick-thumb li img {
-  width: 100%;
+
+.ant-carousel >>> .slick-slide {
   height: 100%;
-  filter: grayscale(100%);
-}
-.ant-carousel >>> .slick-thumb li.slick-active img {
-  filter: grayscale(0%);
 }
 /* 轮播图 end */
+</style>
+<style lang="less" scoped>
+.slide-item {
+  height: 400px;
+  background-size: cover !important;
+}
 </style>
