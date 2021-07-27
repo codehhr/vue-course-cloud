@@ -8,6 +8,8 @@
     <Carousel></Carousel>
     <!-- 轮播图 end -->
 
+    <LiveCourse></LiveCourse>
+    
     <!-- 课程列表 start -->
     <div class="all-course-list">
       <CourseList page-size="10" type="free">
@@ -34,6 +36,7 @@
 import PageHeader from "../components/PageHeader.vue";
 import Carousel from "../components/Carousel";
 import CourseList from "../components/CourseList";
+import LiveCourse from "../components/LiveCourse";
 
 export default {
   name: "index",
@@ -41,6 +44,7 @@ export default {
     PageHeader,
     Carousel,
     CourseList,
+    LiveCourse
   },
 };
 </script>
