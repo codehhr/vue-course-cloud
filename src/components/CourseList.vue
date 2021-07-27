@@ -1,7 +1,14 @@
 <template>
   <div class="course">
     <!-- 课程标题 -->
-    <slot name="course-title"></slot>
+    <div class="course-title">
+      <div></div>
+      <slot name="course-title"></slot>
+      <router-link to="/" class="more">
+        <span>更多 </span>
+        <a-icon type="right-circle" />
+      </router-link>
+    </div>
     <!-- 课程列表 -->
     <div class="course-list">
       <div
@@ -92,9 +99,14 @@ export default {
       formData.append("type", this.type);
       formData.append("pageNum", this.pageNum);
       formData.append("pageSize", this.pageSize);
-      this.$axios.post(this.courseApi, formData).then((res) => {
-        this.courseList = res.data.rows;
-      });
+      this.$axios
+        .post(this.courseApi, formData)
+        .then((res) => {
+          this.courseList = res.data.rows;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
   created() {
@@ -112,6 +124,16 @@ export default {
 @discount-price-color: #ff4500;
 
 .course {
+  .course-title {
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #e8e8e8;
+    .more {
+      color: #999999;
+    }
+  }
   .course-list {
     display: flex;
     flex-direction: row;
