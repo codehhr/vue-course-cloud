@@ -8,6 +8,7 @@ import "ant-design-vue/dist/antd.css";
 Vue.use(Antd);
 
 Vue.prototype.$axios = axios;
+Vue.prototype.$domain = "http://wkt.myhope365.com";
 Vue.config.productionTip = false;
 
 new Vue({
