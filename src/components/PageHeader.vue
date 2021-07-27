@@ -24,58 +24,75 @@
         </a-input-search>
       </div>
       <!-- 搜索框 end -->
-
-      <!-- 登录注册入口 start -->
-      <div class="signin-signup">
+      <div class="course-header-top-right">
         <!-- 购物车 -->
         <a-icon class="shopping-cart" type="shopping-cart" />
         <!-- 分割线 -->
         <a-divider type="vertical" />
-        <div class="signin-signup-entrance">
-          <div>
-            <a-button
-              class="signin-signup-btn"
-              type="primary"
-              @click="showModal"
-            >
-              登录/注册
-            </a-button>
-            <a-modal v-model="visible" title="Basic Modal" @ok="handleOk">
-              <p>Some contents...</p>
-              <p>Some contents...</p>
-              <p>Some contents...</p>
-            </a-modal>
-          </div>
-        </div>
+        <!-- 登录/注册 -->
+        <login-register></login-register>
         <!-- 头像 -->
         <a-avatar icon="user" />
       </div>
-      <!-- 登录注册入口 end -->
     </div>
     <!-- 顶部上半部分 end -->
 
     <!-- 顶部课程导航 start -->
-    <nav></nav>
+    <nav>
+      <router-link to="/">首页</router-link>
+      <!-- 课程分类 start -->
+      <a-dropdown>
+        <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
+          课程分类 <a-icon type="down" />
+        </a>
+        <a-menu slot="overlay">
+          <a-menu-item v-for="(item, index) in topicList" :key="index">
+            <a href="">{{ item.title }}</a>
+          </a-menu-item>
+        </a-menu>
+      </a-dropdown>
+      <router-link to="/ExclusiveCourse">专属课程</router-link>
+      <!-- 课程分类 end -->
+    </nav>
     <!-- 顶部课程导航 end -->
   </div>
 </template>
 
 <script>
+import LoginRegister from "./LoginRegister";
+
 export default {
   name: "PageHeader",
   data() {
     return {
-      visible: false,
+      topicList: [],
+      topicListApi: "/weChat/applet/subject/list",
     };
   },
   methods: {
-    showModal() {
-      this.visible = true;
+    // 点击搜素
+    onSearch(v) {
+      console.log(v);
     },
-    handleOk(e) {
-      console.log(e);
-      this.visible = false;
+
+    // 获取专题列表
+    getTopicList() {
+      this.$axios
+        .post(`${this.$domain}${this.topicListApi}`, { enable: 1 })
+        .then((res) => {
+          if (res.data.code == 0) {
+            this.topicList = res.data.rows;
+          } else {
+            console.log("getTopicList erroe");
+          }
+        });
     },
+  },
+  created() {
+    this.getTopicList();
+  },
+  components: {
+    LoginRegister,
   },
 };
 </script>
@@ -87,6 +104,7 @@ export default {
   margin: 0 auto;
   width: @main-width;
   height: 136px;
+  // 顶部上半部分
   .course-header-top {
     padding-right: 18px;
     height: 106px;
@@ -107,27 +125,23 @@ export default {
         }
       }
     }
-
-    .signin-signup {
-      margin: 0 100px;
+    .course-header-top-right {
+      margin-right: 100px;
+      height: 100%;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       .shopping-cart {
         font-size: 20px;
         color: #999999;
       }
-      .signin-signup-entrance {
-        .signin-signup-btn {
-          background-color: transparent;
-          color: #333333;
-          border: none;
-          box-shadow: none;
-        }
-      }
     }
   }
+  // 顶部下半部分
   nav {
+    margin: 0 auto;
+    width: @main-width;
+    text-align: left;
     height: 30px;
   }
 }
