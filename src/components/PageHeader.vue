@@ -39,7 +39,7 @@
 
     <!-- 顶部课程导航 start -->
     <nav>
-      <router-link to="/">首页</router-link>
+      <router-link class="index" to="/">首页</router-link>
       <!-- 课程分类 start -->
       <a-dropdown>
         <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
@@ -99,6 +99,7 @@ export default {
 
 <style scoped lang="less">
 @main-width: 1200px;
+@main-color: #00cf8c;
 
 .course-header {
   margin: 0 auto;
@@ -143,6 +144,25 @@ export default {
     width: @main-width;
     text-align: left;
     height: 30px;
+    line-height: 30px;
+    a {
+      color: #000000;
+      margin-right: 20px;
+    }
+    a.index {
+      position: relative;
+      color: @main-color;
+      &::before {
+        position: absolute;
+        bottom: 0px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        content: "";
+        width: 80%;
+        height: 2px;
+        background-color: @main-color;
+      }
+    }
   }
 }
 </style>
