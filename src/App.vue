@@ -17,6 +17,12 @@
 
 a {
   display: inline-block;
+  text-decoration: none;
+  color: #42b983;
+}
+
+img {
+  display: block;
 }
 
 #app {
@@ -29,7 +35,6 @@ a {
 
 #nav {
   padding: 30px;
-
   a {
     font-weight: bold;
     color: #2c3e50;
