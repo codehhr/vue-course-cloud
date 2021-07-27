@@ -86,6 +86,7 @@ export default {
 }
 /* 轮播图 end */
 </style>
+
 <style lang="less" scoped>
 .slide-item {
   height: 400px;
