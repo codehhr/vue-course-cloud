@@ -1,5 +1,5 @@
 <template>
-  <div class="course-header">
+  <div class="page-header">
     <!-- 顶部上半部分 start -->
     <div class="course-header-top">
       <!-- logo -->
@@ -85,6 +85,9 @@ export default {
           } else {
             console.log("getTopicList erroe");
           }
+        })
+        .catch((err) => {
+          console.log(err);
         });
     },
   },
@@ -101,7 +104,7 @@ export default {
 @main-width: 1200px;
 @main-color: #00cf8c;
 
-.course-header {
+.page-header {
   margin: 0 auto;
   width: @main-width;
   height: 136px;
