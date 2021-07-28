@@ -61,7 +61,7 @@ export default {
 @page-footer-height: 200px;
 @friend-link-title-margin: 20px auto 18px;
 @friend-link-title-font-size: 24px;
-
+@friendslinks-a-friendslink-margin-right: 32px;
 /* footer start */
 .page-footer {
   padding: @page-footer-padding;
@@ -84,12 +84,12 @@ export default {
     justify-content: flex-start;
     a.friendslink {
       color: @main-color;
-      margin-right: 20px;
+      margin-right: @friendslinks-a-friendslink-margin-right;
     }
   }
 
   .footer-line {
-    margin: 36px auto;
+    margin: 36px auto 10px;
     padding: 0 100px;
     width: calc(@main-width - 200px);
     height: 1px;
