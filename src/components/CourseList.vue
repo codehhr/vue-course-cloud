@@ -17,6 +17,7 @@
         :key="index"
       >
         <router-link
+          target="_blank"
           :to="{ name: 'CourseDetail', params: { id: item.courseId } }"
         >
           <!-- coverFileUrl start -->
