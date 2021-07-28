@@ -1,13 +1,13 @@
 <template>
   <div class="page">
     <div class="detailpage-header-outer">
-      <PageHeader>
+      <page-header>
         <template v-slot:in>
           <div>
-            <HeaderNav></HeaderNav>
+            <header-nav></header-nav>
           </div>
         </template>
-      </PageHeader>
+      </page-header>
     </div>
 
     <!-- 面包屑导航 start -->
@@ -22,7 +22,15 @@
     </a-breadcrumb>
     <!-- 面包屑导航 end -->
 
-    <PageFooter></PageFooter>
+    <!-- 视频详情 start -->
+    <course-video-detail></course-video-detail>
+    <!-- 视频详情 end -->
+
+    <!-- 视频详情导航 start -->
+    <course-video-detail-nav></course-video-detail-nav>
+    <!-- 视频详情导航 end -->
+
+    <page-footer></page-footer>
   </div>
 </template>
 
@@ -30,6 +38,8 @@
 import PageHeader from "../PageHeader/PageHeader";
 import HeaderNav from "../PageHeader/HeaderNav";
 import PageFooter from "../PageFooter";
+import CourseVideoDetail from "./CourseVideoDetail";
+import CourseVideoDetailNav from "./CourseVideoDetailNav";
 
 export default {
   name: "CourseDetail",
@@ -37,6 +47,8 @@ export default {
     PageHeader,
     HeaderNav,
     PageFooter,
+    CourseVideoDetail,
+    CourseVideoDetailNav,
   },
 };
 </script>
@@ -74,5 +86,7 @@ export default {
     text-align: left;
   }
   // 面包屑导航 end
+  .course-video-detail {
+  }
 }
 </style>
