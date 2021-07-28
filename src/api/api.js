@@ -33,6 +33,11 @@ export function requestFriendsLink() {
   return axios.post("/api/system/dict/data/list/open", formData);
 }
 
+// 获取课程点击后的详情数据
+export function requestCourseDetailData(courseId) {
+  return axios.get(`/api/pc/course/detail/${courseId}`);
+}
+
 export function login(username, password) {
   let form = new FormData();
   form.append("username", username);
