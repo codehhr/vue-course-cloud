@@ -21,26 +21,20 @@
 </template>
 
 <script>
+import { requestFriendsLink } from "../api/api";
+
 export default {
   name: "PageFooter",
   data() {
     return {
-      footerApi: "/system/dict/data/list/open",
       footerData: [],
     };
   },
   methods: {
     getFooterData() {
-      let formData = new FormData();
-      formData.append("dictType", "blogroll");
-      formData.append("pageNum", 1);
-      formData.append("pageSize", 10);
-      formData.append("orderByColumn", "dictSort");
-      formData.append("isAsc", "asc");
-      this.$axios
-        .post(`${this.$domain}${this.footerApi}`, formData)
+      requestFriendsLink()
         .then((res) => {
-          this.footerData = res.data.rows;
+          this.footerData = res.rows;
         })
         .catch((err) => {
           console.log(err);

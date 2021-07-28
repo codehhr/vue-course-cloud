@@ -44,11 +44,12 @@
 </template>
 
 <script>
+import { requestCourseList } from "../api/api";
+
 export default {
   name: "CourseList",
   data() {
     return {
-      courseApi: `${this.$domain}/weChat/applet/course/list/type`,
       courseList: [
         // example
         {
@@ -95,14 +96,9 @@ export default {
   },
   methods: {
     getCourseList() {
-      let formData = new FormData();
-      formData.append("type", this.type);
-      formData.append("pageNum", this.pageNum);
-      formData.append("pageSize", this.pageSize);
-      this.$axios
-        .post(this.courseApi, formData)
+      requestCourseList(this.type, this.pageSize, this.pageNum)
         .then((res) => {
-          this.courseList = res.data.rows;
+          this.courseList = res.rows;
         })
         .catch((err) => {
           console.log(err);

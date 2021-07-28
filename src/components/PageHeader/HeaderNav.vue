@@ -22,24 +22,24 @@
 </template>
 
 <script>
+import { requestTopicList } from "../../api/api";
+
 export default {
   name: "HeaderNav",
   data() {
     return {
       topicList: [],
-      topicListApi: "/weChat/applet/subject/list",
     };
   },
   methods: {
     // 获取专题列表
     getTopicList() {
-      this.$axios
-        .post(`${this.$domain}${this.topicListApi}`, { enable: 1 })
+      requestTopicList()
         .then((res) => {
-          if (res.data.code == 0) {
-            this.topicList = res.data.rows;
+          if (res.code == 0) {
+            this.topicList = res.rows;
           } else {
-            console.log("getTopicList erroe");
+            console.log("getTopicList error");
           }
         })
         .catch((err) => {

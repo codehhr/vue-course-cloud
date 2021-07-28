@@ -26,11 +26,12 @@
 </template>
 
 <script>
+import { requestSlide } from "../api/api";
+
 export default {
   name: "Carousel",
   data() {
     return {
-      slideApi: `${this.$domain}/weChat/applet/course/banner/list`,
       number: "4",
       slideList: [],
     };
@@ -38,11 +39,10 @@ export default {
   methods: {
     // 请求轮播图 start
     renderSlide() {
-      this.$axios
-        .get(`${this.slideApi}?number=${this.number}`)
+      requestSlide(4)
         .then((res) => {
-          if (res.data.code == 0) {
-            this.slideList = res.data.data;
+          if (res.code == 0) {
+            this.slideList = res.data;
           } else {
             return;
           }
