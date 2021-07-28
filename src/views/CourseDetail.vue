@@ -35,11 +35,11 @@
 </template>
 
 <script>
-import PageHeader from "../PageHeader/PageHeader";
-import HeaderNav from "../PageHeader/HeaderNav";
-import PageFooter from "../PageFooter";
-import CourseVideoDetail from "./CourseVideoDetail";
-import CourseVideoDetailNav from "./CourseVideoDetailNav";
+import PageHeader from "../components/PageHeader/PageHeader";
+import HeaderNav from "../components/PageHeader/HeaderNav";
+import PageFooter from "../components/PageFooter";
+import CourseVideoDetail from "../components/CourseDetail/CourseVideoDetail";
+import CourseVideoDetailNav from "../components/CourseDetail/CourseVideoDetailNav";
 
 export default {
   name: "CourseDetail",

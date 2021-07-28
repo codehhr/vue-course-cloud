@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Index from "../views/Index";
 import ExclusiveCourse from "../components/ExclusiveCourse";
-import CourseDetail from "../components/CourseDetail/CourseDetail";
+import CourseDetail from "../views/CourseDetail";
 
 Vue.use(VueRouter);
 

@@ -92,6 +92,7 @@ export default {
   align-items: center;
   justify-content: flex-start;
   background-color: #ffffff;
+  border-radius: 10px;
   .cover {
     margin-right: 60px;
     width: 360px;
