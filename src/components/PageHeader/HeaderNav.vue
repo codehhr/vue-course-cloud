@@ -4,7 +4,7 @@
     <nav>
       <router-link class="index" to="/">首页</router-link>
       <!-- 课程分类 start -->
-      <a-dropdown>
+      <a-dropdown class="dropdown">
         <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
           课程分类 <a-icon type="down" />
         </a>
@@ -62,23 +62,28 @@ nav {
   width: @main-width;
   text-align: left;
   height: 30px;
-  line-height: 30px;
+  line-height: 26px;
   a {
     color: #000000;
-    margin-right: 20px;
+    margin-right: 28px;
   }
   a.index {
     position: relative;
     color: @main-color;
     &::before {
       position: absolute;
-      bottom: 0px;
+      bottom: -4px;
       left: 50%;
       transform: translate(-50%, -50%);
       content: "";
       width: 80%;
       height: 2px;
       background-color: @main-color;
+    }
+  }
+  a.dropdown {
+    &:hover {
+      color: @main-color;
     }
   }
 }
