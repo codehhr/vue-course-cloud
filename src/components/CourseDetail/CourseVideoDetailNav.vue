@@ -2,7 +2,7 @@
   <div class="course-video-detail-nav">
     <a-tabs default-active-key="1">
       <a-tab-pane key="1" tab="课程描述">
-        Content of Tab Pane 1
+        <p class="course-detail" v-html="courseDetailData.courseDetail"></p>
       </a-tab-pane>
       <a-tab-pane key="2" tab="目录">
         Content of Tab Pane 1
@@ -17,6 +17,10 @@
 <script>
 export default {
   name: "CourseVideoDetailNav",
+  props: {
+    courseDetailData: Object,
+  },
+  created() {},
 };
 </script>
 
@@ -31,5 +35,9 @@ export default {
   height: 188px;
   background-color: #ffffff;
   border-radius: 10px;
+  p.course-detail {
+    color: #000000a6;
+    line-height: 16px;
+  }
 }
 </style>

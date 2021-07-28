@@ -23,11 +23,15 @@
     <!-- 面包屑导航 end -->
 
     <!-- 视频详情 start -->
-    <course-video-detail></course-video-detail>
+    <course-video-detail
+      :courseDetailData="courseDetailData"
+    ></course-video-detail>
     <!-- 视频详情 end -->
 
     <!-- 视频详情导航 start -->
-    <course-video-detail-nav></course-video-detail-nav>
+    <course-video-detail-nav
+      :courseDetailData="courseDetailData"
+    ></course-video-detail-nav>
     <!-- 视频详情导航 end -->
 
     <page-footer></page-footer>
@@ -40,9 +44,25 @@ import HeaderNav from "../components/PageHeader/HeaderNav";
 import PageFooter from "../components/PageFooter";
 import CourseVideoDetail from "../components/CourseDetail/CourseVideoDetail";
 import CourseVideoDetailNav from "../components/CourseDetail/CourseVideoDetailNav";
+import { requestCourseDetailData } from "../api/api";
 
 export default {
   name: "CourseDetail",
+  data() {
+    return {
+      courseDetailData: {},
+    };
+  },
+  methods: {
+    getCourseDetailData() {
+      requestCourseDetailData(this.$route.params.id).then((res) => {
+        this.courseDetailData = res.data;
+      });
+    },
+  },
+  created() {
+    this.getCourseDetailData();
+  },
   components: {
     PageHeader,
     HeaderNav,

@@ -84,17 +84,18 @@ export default {
         height: 55px;
       }
       .search {
-        width: 32%;
+        width: 33%;
+        overflow: hidden;
         .input-search {
           width: 100%;
+          height: 100%;
           .search-btn {
             width: 100%;
-            height: 40px;
           }
         }
       }
       .course-header-top-right {
-        margin-right: 100px;
+        margin-right: 40px;
         height: 100%;
         display: flex;
         align-items: center;

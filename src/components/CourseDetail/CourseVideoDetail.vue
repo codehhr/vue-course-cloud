@@ -56,26 +56,12 @@
 </template>
 
 <script>
-import { requestCourseDetailData } from "../../api/api";
-
 export default {
   name: "CourseVideoDetail",
-  data() {
-    return {
-      courseDetailData: {},
-    };
+  props: {
+    courseDetailData: Object,
   },
-  methods: {
-    getCourseDetailData() {
-      requestCourseDetailData(this.$route.params.id).then((res) => {
-        this.courseDetailData = res.data;
-        console.log(this.courseDetailData);
-      });
-    },
-  },
-  created() {
-    this.getCourseDetailData();
-  },
+  created() {},
 };
 </script>
 
