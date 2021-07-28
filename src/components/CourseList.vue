@@ -124,8 +124,9 @@ export default {
 @discount-price-color: #ff4500;
 
 .course {
+  margin: 20px 0;
   .course-title {
-    margin: 20px 0;
+    margin: 10px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
