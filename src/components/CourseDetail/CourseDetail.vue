@@ -86,7 +86,5 @@ export default {
     text-align: left;
   }
   // 面包屑导航 end
-  .course-video-detail {
-  }
 }
 </style>
