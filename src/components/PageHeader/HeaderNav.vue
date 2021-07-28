@@ -59,7 +59,6 @@ export default {
 
 nav {
   margin: 0 auto;
-  width: @main-width;
   text-align: left;
   height: 30px;
   line-height: 26px;
