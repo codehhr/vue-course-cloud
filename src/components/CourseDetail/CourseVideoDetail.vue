@@ -1,54 +1,56 @@
 <template>
-  <div class="course-video-detail">
-    <div
-      class="cover"
-      :style="
-        `background: url('${courseDetailData.coverFileUrl}') 0 center no-repeat`
-      "
-    ></div>
-    <div class="des">
-      <div class="title">{{ courseDetailData.courseTitle }}</div>
-      <div class="learn-num">
-        <span>累计{{ courseDetailData.participationsCount }}人学习</span>
-        <a-rate class="stars" :default-value="4" disabled />
-      </div>
-      <div class="price">
-        <div class="free" v-if="courseDetailData.isFree == 1">
-          <p>免费</p>
-          <a-button class="free-play" type="primary">
-            立即观看
-          </a-button>
+  <div class="course-video-detail-outer">
+    <div class="course-video-detail">
+      <div
+        class="cover"
+        :style="
+          `background: url('${courseDetailData.coverFileUrl}') 0 center no-repeat`
+        "
+      ></div>
+      <div class="des">
+        <div class="title">{{ courseDetailData.courseTitle }}</div>
+        <div class="learn-num">
+          <span>累计{{ courseDetailData.participationsCount }}人学习</span>
+          <a-rate class="stars" :default-value="4" disabled />
         </div>
-        <div v-else class="discount">
-          <span class="discount-price">
-            ￥{{ courseDetailData.discountPrice }}
-          </span>
-          <span class="course-price">
-            {{ courseDetailData.coursePrice }}
-          </span>
-          <p class="discount-desc">
-            <a-tag color="orange">
-              {{ courseDetailData.discountDesc }}
-            </a-tag>
-          </p>
-          <div class="btns">
-            <a-button
-              class="btn"
-              type="primary"
-              style="background-color:rgb(255, 128, 0);border:rgb(255, 128, 0);;"
-            >
-              立即购买
-            </a-button>
-            <a-button class="btn" type="primary">
-              加入购物车
-            </a-button>
-            <a-button class="collection" icon="heart">
-              收藏
+        <div class="price">
+          <div class="free" v-if="courseDetailData.isFree == 1">
+            <p>免费</p>
+            <a-button class="free-play" type="primary">
+              立即观看
             </a-button>
           </div>
+          <div v-else class="discount">
+            <span class="discount-price">
+              ￥{{ courseDetailData.discountPrice }}
+            </span>
+            <span class="course-price">
+              {{ courseDetailData.coursePrice }}
+            </span>
+            <p class="discount-desc">
+              <a-tag color="orange">
+                {{ courseDetailData.discountDesc }}
+              </a-tag>
+            </p>
+            <div class="btns">
+              <a-button
+                class="btn"
+                type="primary"
+                style="background-color:rgb(255, 128, 0);border:rgb(255, 128, 0);;"
+              >
+                立即购买
+              </a-button>
+              <a-button class="btn" type="primary">
+                加入购物车
+              </a-button>
+              <a-button class="collection" icon="heart">
+                收藏
+              </a-button>
+            </div>
+          </div>
         </div>
+        <div class="btns"></div>
       </div>
-      <div class="btns"></div>
     </div>
   </div>
 </template>
