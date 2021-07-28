@@ -1,7 +1,13 @@
 <template>
-  <div>
+  <div class="page">
     <!-- 头部 start -->
-    <PageHeader></PageHeader>
+    <PageHeader>
+      <template v-slot:out>
+        <div class="header-nav">
+          <HeaderNav></HeaderNav>
+        </div>
+      </template>
+    </PageHeader>
     <!-- 头部 end -->
 
     <!-- 轮播图 start -->
@@ -46,6 +52,7 @@
 
 <script>
 import PageHeader from "../components/PageHeader/PageHeader";
+import HeaderNav from "../components/PageHeader/HeaderNav";
 import Carousel from "../components/Carousel";
 import CourseList from "../components/CourseList";
 import LiveCourse from "../components/LiveCourse";
@@ -56,6 +63,7 @@ export default {
   components: {
     PageFooter,
     PageHeader,
+    HeaderNav,
     Carousel,
     CourseList,
     LiveCourse,
@@ -74,5 +82,18 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+</style>
+<style>
+#app {
+  height: 100%;
+}
+.page {
+  position: relative;
+  height: 100%;
+}
+.header-nav {
+  margin: 0 auto;
+  width: 1200px;
 }
 </style>
