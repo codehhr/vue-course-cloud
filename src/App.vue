@@ -21,6 +21,10 @@ a {
   color: #42b983;
 }
 
+ul {
+  list-style: none !important;
+}
+
 img {
   display: block;
 }
