@@ -3,7 +3,7 @@
     <!-- 顶部 start -->
     <div class="course-header-top">
       <!-- logo -->
-      <img class="logo" src="../assets/logo.png" alt="" />
+      <img class="logo" src="../../assets/logo.png" alt="" />
       <!-- 搜索框 start -->
       <div class="search">
         <a-input-search
@@ -41,8 +41,8 @@
 </template>
 
 <script>
-import LoginRegister from "./LoginRegister";
-import HeaderNav from "./HeaderNav.vue";
+import LoginRegister from "../LoginRegister";
+import HeaderNav from "./HeaderNav";
 
 export default {
   name: "PageHeader",

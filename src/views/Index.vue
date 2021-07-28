@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import PageHeader from "../components/PageHeader.vue";
+import PageHeader from "../components/PageHeader/PageHeader";
 import Carousel from "../components/Carousel";
 import CourseList from "../components/CourseList";
 import LiveCourse from "../components/LiveCourse";
