@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Index from "../views/Index";
 import ExclusiveCourse from "../components/ExclusiveCourse";
 import CourseDetail from "../views/CourseDetail";
+import PersonalCenter from "../views/PersonalCenter";
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,11 @@ const routes = [
     path: "/CourseDetail/:id",
     name: "CourseDetail",
     component: CourseDetail,
+  },
+  {
+    path: "/personal-center",
+    name: "PersonalCenter",
+    component: PersonalCenter,
   },
 ];
 
