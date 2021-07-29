@@ -188,11 +188,12 @@
           <a-form-item v-bind="formItemLayout" label="帐号">
             <a-input
               v-decorator="[
-                'username',
+                'loginName',
                 {
                   rules: [{ required: true, message: '请输入用户名' }],
                 },
               ]"
+              title="请输入账号(6-20位，非纯数字)!"
               placeholder="请输入账号(6-20位，非纯数字)!"
               autocomplete
             >
@@ -214,6 +215,7 @@
                   ],
                 },
               ]"
+              title="请输入你的密码(6-20位，非汉字)!"
               placeholder="请输入你的密码(6-20位，非汉字)!"
               typeautocomplete="password"
             />
@@ -234,9 +236,10 @@
                   ],
                 },
               ]"
-              autocomplete
-              placeholder="请再次输入你的密码"
               type="password"
+              title="请再次输入你的密码"
+              placeholder="请再次输入你的密码"
+              autocomplete
               @blur="handleConfirmBlur"
             />
           </a-form-item>
@@ -260,8 +263,9 @@
                   ],
                 },
               ]"
-              autocomplete
+              title="请输入你的昵称"
               placeholder="请输入你的昵称"
+              autocomplete
             />
           </a-form-item>
           <a-form-item v-bind="formItemLayout" label="手机号码">
@@ -279,6 +283,7 @@
               ]"
               autocomplete
               placeholder="请输入你的手机号"
+              title="请输入你的手机号"
             >
               <a-select
                 slot="addonBefore"
@@ -303,20 +308,25 @@
                     {
                       rules: [
                         {
-                          required: true,
                           message: '请输入验证码!',
                         },
                       ],
                     },
                   ]"
                   autocomplete
-                  placeholder="请输入验证码!"
+                  placeholder="请输入验证码"
+                  title="请输入验证码"
                 />
               </a-col>
               <a-col :span="12">
-                <a-button class="get-code" @click="getCode"
-                  >获取验证码</a-button
+                <a-button
+                  :disabled="getCodeBtnDisabled"
+                  class="get-code"
+                  @click="getMobileCode"
                 >
+                  <span v-show="!hadRequestCode">获取验证码</span>
+                  <span v-show="hadRequestCode">{{ second }}</span>
+                </a-button>
               </a-col>
             </a-row>
           </a-form-item>
@@ -335,15 +345,17 @@
 </template>
 
 <script>
-import { login } from "../api/api";
-// register
+import { login, getCode, register } from "../api/api";
 
 export default {
   name: "LoginRegister",
   data() {
     return {
+      // 显示登录模态框
       loginVisible: false,
+      // 显示注册模态框
       registerVisible: false,
+      // 用户信息
       userInfo: {},
       // 注册 start
       confirmDirty: false,
@@ -371,6 +383,9 @@ export default {
         },
       },
       // 注册 end
+      getCodeBtnDisabled: false,
+      hadRequestCode: false,
+      second: 1 * 60,
     };
   },
   methods: {
@@ -386,12 +401,11 @@ export default {
       this.registerVisible = true;
     },
     // 普通登录
-    // 点击登录
     handleLoginSubmit(e) {
       e.preventDefault();
       this.normalForm.validateFields((err, values) => {
         if (!err) {
-          login(values.username, values.password).then((res) => {
+          login(values.loginName, values.password).then((res) => {
             if (res.code == 0) {
               this.userInfo = res.userInfo;
               console.log(this.userInfo);
@@ -410,7 +424,7 @@ export default {
       e.preventDefault();
       this.telForm.validateFields((err, values) => {
         if (!err) {
-          login(values.username, values.password).then((res) => {
+          login(values.loginName, values.password).then((res) => {
             if (res.code == 0) {
               this.userInfo = res.userInfo;
               console.log(this.userInfo);
@@ -430,16 +444,27 @@ export default {
       e.preventDefault();
       this.registerForm.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          this.$message.warning("帐号或密码不正确");
-          console.log(values);
-          // register();
+          register(
+            values.loginName,
+            values.password,
+            values.nickname,
+            values.mobile,
+            values.code
+          ).then((res) => {
+            if (res.code == 0) {
+              this.$message.success("注册成功");
+            }
+          });
         }
       });
     },
+
     handleConfirmBlur(e) {
       const value = e.target.value;
       this.confirmDirty = this.confirmDirty || !!value;
     },
+
+    // 验证密码 start
     compareToFirstPassword(rule, value, callback) {
       const form = this.registerForm;
       if (value && value !== form.getFieldValue("password")) {
@@ -448,6 +473,7 @@ export default {
         callback();
       }
     },
+
     validateToNextPassword(rule, value, callback) {
       const form = this.registerForm;
       if (value && this.confirmDirty) {
@@ -455,10 +481,50 @@ export default {
       }
       callback();
     },
+    // 验证密码 end
+
     // 注册 end
 
     // 获取验证码
-    getCode() {},
+    getMobileCode() {
+      let that = this;
+      function countDown() {
+        // 按钮禁用
+        that.getCodeBtnDisabled = true;
+
+        // 按钮倒计时 start
+        let getCodeInterval = null;
+        that.hadRequestCode = true;
+        if (!getCodeInterval) {
+          getCodeInterval = setInterval(() => {
+            if (that.second <= 0) {
+              clearInterval(getCodeInterval);
+              that.getCodeBtnDisabled = false;
+              that.hadRequestCode = false;
+            } else {
+              that.second--;
+            }
+          }, 1000);
+        }
+        // 按钮倒计时 end
+      }
+
+      // 获取验证码
+      this.registerForm.validateFieldsAndScroll((err, values) => {
+        if (!err) {
+          if (values.mobile == "") {
+            this.$message.warning("兄弟~空着呢 ~");
+          } else {
+            countDown();
+            getCode(values.mobile).then((res) => {
+              if (res.code == 500) {
+                this.$message.warning(res.msg);
+              }
+            });
+          }
+        }
+      });
+    },
   },
   beforeCreate() {
     this.normalForm = this.$form.createForm(this, { name: "normal_login" });
@@ -537,6 +603,10 @@ export default {
       }
       .ant-input-group .ant-input {
         border-radius: 0;
+      }
+      .get-code {
+        min-width: 100px;
+        color: #000000;
       }
       .register {
         width: 100%;

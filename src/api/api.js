@@ -47,6 +47,11 @@ export function login(username, password) {
   return axios.post(`/api/pcUser/login`, formData);
 }
 
+// 注册时发送验证码
+export function getCode(mobile) {
+  return axios.get(`/api/pcUser/register/send/code/${mobile}`);
+}
+
 // 注册
 export function register(loginName, password, nickname, mobile, code) {
   let formData = new FormData();
@@ -55,8 +60,7 @@ export function register(loginName, password, nickname, mobile, code) {
   formData.append("nickname", nickname);
   formData.append("mobile", mobile);
   formData.append("code", code);
-
-  return axios.post(`/api/pcUser/regirrst`, formData);
+  return axios.post(`/api/pcUser/register`, formData);
 }
 
 //查看登录用户个人信息
