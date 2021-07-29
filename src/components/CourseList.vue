@@ -159,7 +159,7 @@ export default {
         }
       }
       p {
-        margin: 3px 0;
+        margin: 4px 0;
         color: #888888;
         text-align: left;
       }
