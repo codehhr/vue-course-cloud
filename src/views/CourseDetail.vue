@@ -1,39 +1,40 @@
 <template>
   <div class="page">
-    <div class="detailpage-header-outer">
-      <page-header>
-        <template v-slot:in>
-          <div>
-            <header-nav></header-nav>
-          </div>
-        </template>
-      </page-header>
+    <div>
+      <div class="detailpage-header-outer">
+        <page-header>
+          <template v-slot:in>
+            <div>
+              <header-nav></header-nav>
+            </div>
+          </template>
+        </page-header>
+      </div>
+
+      <!-- 面包屑导航 start -->
+      <a-breadcrumb class="breadcrumb-nav">
+        <a-breadcrumb-item href="">
+          <a-icon type="home" />
+          <span>首页</span>
+        </a-breadcrumb-item>
+        <a-breadcrumb-item href="">
+          <span>视频详情</span>
+        </a-breadcrumb-item>
+      </a-breadcrumb>
+      <!-- 面包屑导航 end -->
+
+      <!-- 视频详情 start -->
+      <course-video-detail
+        :courseDetailData="courseDetailData"
+      ></course-video-detail>
+      <!-- 视频详情 end -->
+
+      <!-- 视频详情导航 start -->
+      <course-video-detail-nav
+        :courseDetailData="courseDetailData"
+      ></course-video-detail-nav>
+      <!-- 视频详情导航 end -->
     </div>
-
-    <!-- 面包屑导航 start -->
-    <a-breadcrumb class="breadcrumb-nav">
-      <a-breadcrumb-item href="">
-        <a-icon type="home" />
-        <span>首页</span>
-      </a-breadcrumb-item>
-      <a-breadcrumb-item href="">
-        <span>视频详情</span>
-      </a-breadcrumb-item>
-    </a-breadcrumb>
-    <!-- 面包屑导航 end -->
-
-    <!-- 视频详情 start -->
-    <course-video-detail
-      :courseDetailData="courseDetailData"
-    ></course-video-detail>
-    <!-- 视频详情 end -->
-
-    <!-- 视频详情导航 start -->
-    <course-video-detail-nav
-      :courseDetailData="courseDetailData"
-    ></course-video-detail-nav>
-    <!-- 视频详情导航 end -->
-
     <page-footer></page-footer>
   </div>
 </template>
@@ -75,8 +76,12 @@ export default {
 
 <style scoped lang="less">
 .page {
+  min-height: 100vh;
   font-size: 16px;
   background-color: #f4f4f4;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   .detailpage-header-outer {
     height: 80px;
     background-color: #ffffff;
