@@ -47,6 +47,18 @@ export function login(username, password) {
   return axios.post(`/api/pcUser/login`, formData);
 }
 
+// 注册
+export function register(loginName, password, nickname, mobile, code) {
+  let formData = new FormData();
+  formData.append("loginName", loginName);
+  formData.append("password", password);
+  formData.append("nickname", nickname);
+  formData.append("mobile", mobile);
+  formData.append("code", code);
+
+  return axios.post(`/api/pcUser/regirrst`, formData);
+}
+
 //查看登录用户个人信息
 export function getUserInfo() {
   return axios.get("/courseapi/pcUser/login-user/info");
