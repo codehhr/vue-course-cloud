@@ -57,6 +57,7 @@ export default {
 @friend-link-title-margin: 20px auto 18px;
 @friend-link-title-font-size: 24px;
 @friendslinks-a-friendslink-margin-right: 32px;
+
 /* footer start */
 .page-footer {
   padding: @page-footer-padding;
