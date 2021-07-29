@@ -28,15 +28,10 @@
           </a-input-search>
         </div>
         <!-- 搜索框 end -->
+
         <div class="course-header-top-right">
-          <!-- 购物车 -->
-          <a-icon class="shopping-cart" type="shopping-cart" />
-          <!-- 分割线 -->
-          <a-divider type="vertical" />
           <!-- 登录/注册 -->
           <login-register></login-register>
-          <!-- 头像 -->
-          <a-avatar icon="user" />
         </div>
       </div>
       <!-- 顶部 end -->
@@ -94,24 +89,24 @@ export default {
           }
         }
       }
-      .course-header-top-right {
-        margin-right: 40px;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        .shopping-cart {
-          font-size: 20px;
-          color: #999999;
-        }
-      }
     }
   }
 }
 </style>
-<style>
+<style lang="less">
 .ant-input-group .ant-input {
   border-radius: 20px;
   padding: 0 20px;
+}
+.course-header-top-right {
+  margin-right: 40px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .shopping-cart {
+    font-size: 20px;
+    color: #999999;
+  }
 }
 </style>
