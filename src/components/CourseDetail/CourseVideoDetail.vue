@@ -61,7 +61,6 @@ export default {
   props: {
     courseDetailData: Object,
   },
-  created() {},
 };
 </script>
 
