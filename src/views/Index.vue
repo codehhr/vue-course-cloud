@@ -85,9 +85,6 @@ export default {
 }
 </style>
 <style>
-#app {
-  height: 100%;
-}
 .page {
   position: relative;
   height: 100%;
