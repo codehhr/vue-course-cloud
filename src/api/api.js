@@ -38,12 +38,13 @@ export function requestCourseDetailData(courseId) {
   return axios.get(`/api/pc/course/detail/${courseId}`);
 }
 
+// 帐号密码登录
 export function login(username, password) {
-  let form = new FormData();
-  form.append("username", username);
-  form.append("password", password);
-  form.append("rememberMe", true);
-  return axios.post(`/courseapi/pcUser/login`, form);
+  let formData = new FormData();
+  formData.append("username", username);
+  formData.append("password", password);
+  formData.append("rememberMe", true);
+  return axios.post(`/api/pcUser/login`, formData);
 }
 
 //查看登录用户个人信息
