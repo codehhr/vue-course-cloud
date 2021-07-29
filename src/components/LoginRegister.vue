@@ -405,11 +405,11 @@ export default {
       e.preventDefault();
       this.normalForm.validateFields((err, values) => {
         if (!err) {
-          login(values.loginName, values.password).then((res) => {
+          login(values.username, values.password).then((res) => {
             if (res.code == 0) {
               this.userInfo = res.userInfo;
               console.log(this.userInfo);
-              this.visible = false;
+              this.loginVisible = false;
             } else {
               this.$message.warning("帐号或密码不正确");
             }
@@ -424,11 +424,10 @@ export default {
       e.preventDefault();
       this.telForm.validateFields((err, values) => {
         if (!err) {
-          login(values.loginName, values.password).then((res) => {
+          login(values.username, values.password).then((res) => {
             if (res.code == 0) {
               this.userInfo = res.userInfo;
-              console.log(this.userInfo);
-              this.visible = false;
+              this.loginVisible = false;
             } else {
               this.$message.warning("帐号或密码不正确");
             }
