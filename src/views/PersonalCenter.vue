@@ -21,16 +21,16 @@
               <a class="change-userinfo" @click="showModal"> 修改 </a>
               <p>{{ $store.state.userInfo.nickname }}</p>
               <a-modal
-                  class="nickname-modal"
-                  v-model="visible"
-                  title="修改昵称"
-                  @ok="changeNickname"
+                class="nickname-modal"
+                v-model="visible"
+                title="修改昵称"
+                @ok="changeNickname"
               >
-                <a-input class="new-nickname" placeholder="请输入新昵称!"/>
+                <a-input class="new-nickname" placeholder="请输入新昵称!" />
               </a-modal>
             </div>
             <!-- 昵称 end -->
-            <a-divider/>
+            <a-divider />
 
             <!-- 手机号 start -->
             <div class="userinfo-item mobile">
@@ -38,16 +38,16 @@
               <a class="change-userinfo" @click="showModal"> 修改 </a>
               <p>{{ $store.state.userInfo.mobile }}</p>
               <a-modal
-                  class="nickname-modal"
-                  v-model="visible"
-                  title="修改手机号码"
-                  @ok="changeMobile"
+                class="nickname-modal"
+                v-model="visible"
+                title="修改手机号码"
+                @ok="changeMobile"
               >
-                <a-input class="new-nickname" placeholder="请输入新昵称!"/>
+                <a-input class="new-nickname" placeholder="请输入新昵称!" />
               </a-modal>
             </div>
             <!-- 手机号 end -->
-            <a-divider/>
+            <a-divider />
 
             <!-- 密码 start -->
             <div class="userinfo-item password">
@@ -55,22 +55,22 @@
               <a class="change-userinfo" @click="showModal"> 修改 </a>
               <p>******</p>
               <a-modal
-                  class="nickname-modal"
-                  v-model="visible"
-                  title="修改密码码"
-                  @ok="changeMobile"
+                class="nickname-modal"
+                v-model="visible"
+                title="修改密码码"
+                @ok="changeMobile"
               >
-                <a-input class="password" placeholder="请输入新昵称!"/>
+                <a-input class="password" placeholder="请输入新昵称!" />
               </a-modal>
             </div>
             <!-- 密码 end -->
-            <a-divider/>
+            <a-divider />
 
             <!-- 头像 start -->
             <div class="userinfo-item change-avatar">
               <div
-                  class="large-avatar"
-                  :style="
+                class="large-avatar"
+                :style="
                   'background: url(' +
                     $store.state.userInfo.avatarUrl +
                     ') center center no-repeat'
@@ -79,15 +79,15 @@
 
               <!-- 头像上传 start -->
               <a-upload
-                  name="file"
-                  action="/api/pcUser/updata/userAvatar"
-                  :headers="headers"
-                  @change="handleChange"
-                  :showUploadList="false"
+                name="file"
+                action="/api/pcUser/updata/userAvatar"
+                :headers="headers"
+                @change="handleChange"
+                :showUploadList="false"
               >
                 <div class="upload">
                   <a-button class="upload-btn">
-                    <a-icon class="upload-icon" type="upload"/>
+                    <a-icon class="upload-icon" type="upload" />
                     <span>更改头像</span>
                   </a-button>
                 </div>
@@ -117,7 +117,7 @@ import PageHeader from "../components/PageHeader/PageHeader";
 import HeaderNav from "../components/PageHeader/HeaderNav";
 import PageFooter from "../components/PageFooter";
 
-import {getUserInfo} from "../api/api";
+import { getUserInfo } from "../api/api";
 
 export default {
   name: "PersonalCenter",
@@ -250,7 +250,7 @@ export default {
               color: @main-color;
             }
           }
-          .upload-btn{
+          .upload-btn {
             position: relative;
             left: -10px;
             margin: 10px auto;
