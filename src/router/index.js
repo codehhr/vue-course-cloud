@@ -14,12 +14,12 @@ const routes = [
     component: Index,
   },
   {
-    path: "/ExclusiveCourse",
+    path: "/exclusive-course",
     name: "ExclusiveCourse",
     component: ExclusiveCourse,
   },
   {
-    path: "/CourseDetail/:id",
+    path: "/course-detail/:id",
     name: "CourseDetail",
     component: CourseDetail,
   },
