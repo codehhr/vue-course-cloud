@@ -27,10 +27,10 @@ const routes = [
     name: "CourseDetail",
     component: CourseDetail,
   },
-  // 课程视频
   {
-    path: "/course-detail/course-video",
-    name: "Course-video",
+    // 课程视频
+    path: "/coursevideo",
+    name: "coursevideo",
     component: CourseVideo,
   },
   // 个人中心
