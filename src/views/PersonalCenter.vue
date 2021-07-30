@@ -19,35 +19,35 @@
             <div class="userinfo-item nickname">
               <span>昵称</span>
               <a class="change-userinfo" @click="showModal"> 修改 </a>
-              <p>{{ userInfo.nickname }}</p>
+              <p>{{ $store.state.userInfo.nickname }}</p>
               <a-modal
-                class="nickname-modal"
-                v-model="visible"
-                title="修改昵称"
-                @ok="changeNickname"
+                  class="nickname-modal"
+                  v-model="visible"
+                  title="修改昵称"
+                  @ok="changeNickname"
               >
-                <a-input class="new-nickname" placeholder="请输入新昵称!" />
+                <a-input class="new-nickname" placeholder="请输入新昵称!"/>
               </a-modal>
             </div>
             <!-- 昵称 end -->
-            <a-divider />
+            <a-divider/>
 
             <!-- 手机号 start -->
             <div class="userinfo-item mobile">
               <span>手机号</span>
               <a class="change-userinfo" @click="showModal"> 修改 </a>
-              <p>{{ userInfo.mobile }}</p>
+              <p>{{ $store.state.userInfo.mobile }}</p>
               <a-modal
-                class="nickname-modal"
-                v-model="visible"
-                title="修改手机号码"
-                @ok="changeMobile"
+                  class="nickname-modal"
+                  v-model="visible"
+                  title="修改手机号码"
+                  @ok="changeMobile"
               >
-                <a-input class="new-nickname" placeholder="请输入新昵称!" />
+                <a-input class="new-nickname" placeholder="请输入新昵称!"/>
               </a-modal>
             </div>
             <!-- 手机号 end -->
-            <a-divider />
+            <a-divider/>
 
             <!-- 密码 start -->
             <div class="userinfo-item password">
@@ -55,32 +55,44 @@
               <a class="change-userinfo" @click="showModal"> 修改 </a>
               <p>******</p>
               <a-modal
-                class="nickname-modal"
-                v-model="visible"
-                title="修改密码码"
-                @ok="changeMobile"
+                  class="nickname-modal"
+                  v-model="visible"
+                  title="修改密码码"
+                  @ok="changeMobile"
               >
-                <a-input class="password" placeholder="请输入新昵称!" />
+                <a-input class="password" placeholder="请输入新昵称!"/>
               </a-modal>
             </div>
             <!-- 密码 end -->
-            <a-divider />
+            <a-divider/>
 
             <!-- 头像 start -->
             <div class="userinfo-item change-avatar">
-              <img class="avatar" :src="userInfo.avatarUrl" alt="" />
+              <div
+                  class="large-avatar"
+                  :style="
+                  'background: url(' +
+                    $store.state.userInfo.avatarUrl +
+                    ') center center no-repeat'
+                "
+              ></div>
+
+              <!-- 头像上传 start -->
               <a-upload
-                name="file"
-                :multiple="true"
-                action="/api/pcUser/updata/userAvatar"
-                :headers="headers"
-                @change="handleChange"
+                  name="file"
+                  action="/api/pcUser/updata/userAvatar"
+                  :headers="headers"
+                  @change="handleChange"
+                  :showUploadList="false"
               >
-                <a-button class="upload">
-                  <a-icon class="upload-icon" type="upload" />
-                  更改头像
-                </a-button>
+                <div class="upload">
+                  <a-button class="upload-btn">
+                    <a-icon class="upload-icon" type="upload"/>
+                    <span>更改头像</span>
+                  </a-button>
+                </div>
               </a-upload>
+              <!-- 头像上传 end -->
             </div>
             <!-- 头像 end -->
           </div>
@@ -105,14 +117,13 @@ import PageHeader from "../components/PageHeader/PageHeader";
 import HeaderNav from "../components/PageHeader/HeaderNav";
 import PageFooter from "../components/PageFooter";
 
-import { getUserInfo } from "../api/api";
+import {getUserInfo} from "../api/api";
 
 export default {
   name: "PersonalCenter",
   data() {
     return {
       visible: false,
-      userInfo: {},
       headers: {
         authorization: "authorization-text",
       },
@@ -138,9 +149,10 @@ export default {
       //   console.log(info.file, info.fileList);
       // }
       if (info.file.status === "done") {
-        this.$message.success(`${info.file.name} file uploaded successfully`);
+        this.$message.success(`${info.file.name} 头像上传成功`);
+        this.$store.dispatch("checkAlreadyLogin");
       } else if (info.file.status === "error") {
-        this.$message.error(`${info.file.name} file upload failed.`);
+        this.$message.error(`${info.file.name} 头像上传失败`);
       }
     },
     // 获取用户信息
@@ -162,24 +174,29 @@ export default {
 };
 </script>
 
-<style scoped></style>
 <style lang="less">
 @main-width: 1200px;
 @main-bg-color: #f4f4f4;
+@main-color: #00cf8c;
 
 .personal-page {
   min-height: 100vh;
   background-color: @main-bg-color;
+
   .page-outer {
     height: 80px;
     background-color: #ffffff;
+
     .page-header {
       height: 100%;
+
       .course-header-top {
         display: flex;
         height: 100%;
+
         a.index {
           color: #000000;
+
           &::before {
             background-color: transparent;
           }
@@ -187,6 +204,7 @@ export default {
       }
     }
   }
+
   .personal-container {
     margin: 24px auto;
     padding: 20px 20px;
@@ -194,41 +212,65 @@ export default {
     width: @main-width;
     border-radius: 4px;
     background-color: #ffffff;
+
     .personal-center-title {
       margin-bottom: 20px;
       font-size: 1.6rem;
     }
+
     .personal-center-content {
       padding: 40px;
+
       .userinfo-item {
         span {
           color: #333333;
           font-size: 1.4rem;
         }
+
         p {
           margin: 10px 0;
           font-size: 1.4rem;
         }
+
         .change-userinfo {
           margin: 0 10px;
         }
-        .avatar {
+
+        .large-avatar {
           width: 200px;
           height: 200px;
+          background-size: cover !important;
         }
+
         .upload {
-          font-size: 0.4rem;
+          width: 200px;
+          font-size: 0.8rem;
+          &:hover {
+            span {
+              color: @main-color;
+            }
+          }
+          .upload-btn{
+            position: relative;
+            left: -10px;
+            margin: 10px auto;
+            display: block;
+          }
+          span {
+            font-size: 0.8rem;
+            transition: color 0.4s;
+          }
         }
       }
     }
   }
 }
-</style>
-<style lang="less">
+
 .nickname-modal {
   .ant-modal .ant-modal-content .ant-modal-body {
     padding: 20px;
   }
+
   .new-nickname {
     margin: 0;
   }
