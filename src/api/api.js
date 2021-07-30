@@ -65,7 +65,6 @@ export function register(loginName, password, nickname, mobile, code) {
 
 // 查看登录用户个人信息
 export function getUserInfo() {
-  return axios.get("/courseapi/pcUser/login-user/info");
 }
 //查看登录用户个人信息
 export function logout() {
