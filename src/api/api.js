@@ -67,10 +67,12 @@ export function register(loginName, password, nickname, mobile, code) {
 export function getUserInfo() {
   return axios.get("/api/pcUser/login-user/info");
 }
-//查看登录用户个人信息
-export function logout() {
-  return axios.get("/courseapi/pcUser/logout");
+
+// 退出登录
+export function logOut() {
+  return axios.get("/api/pcUser/logout");
 }
+
 //更改头像
 export function changeUserAvatar(file) {
   let formData = new FormData();
