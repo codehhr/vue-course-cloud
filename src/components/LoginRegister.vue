@@ -139,7 +139,7 @@
                   />
                 </a-input>
               </a-form-item>
-              <a-form-item>
+              <!-- <a-form-item>
                 <a-input
                   v-decorator="[
                     'password',
@@ -157,6 +157,38 @@
                     style="color: rgba(0,0,0,.25)"
                   />
                 </a-input>
+              </a-form-item> -->
+              <a-form-item v-bind="formItemLayout">
+                <a-row :gutter="24">
+                  <a-col :span="20">
+                    <a-input
+                      v-decorator="[
+                        'code',
+                        {
+                          rules: [
+                            {
+                              required: true,
+                              message: '请输入验证码!',
+                            },
+                          ],
+                        },
+                      ]"
+                      autocomplete
+                      placeholder="请输入验证码"
+                      title="请输入验证码"
+                    />
+                  </a-col>
+                  <a-col :span="4">
+                    <a-button
+                      :disabled="getCodeBtnDisabled"
+                      class="get-code"
+                      @click="getMobileCode"
+                    >
+                      <span v-show="!hadRequestCode">获取验证码</span>
+                      <span v-show="hadRequestCode">{{ second }}</span>
+                    </a-button>
+                  </a-col>
+                </a-row>
               </a-form-item>
               <a-form-item>
                 <a-button
@@ -318,6 +350,7 @@
                     {
                       rules: [
                         {
+                          required: true,
                           message: '请输入验证码!',
                         },
                       ],
