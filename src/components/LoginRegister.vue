@@ -34,11 +34,7 @@
       <!-- 头像 -->
       <a-avatar
         class="avatar"
-        :src="
-          $store.state.userInfo
-            ? $store.state.userInfo.avatarUrl
-            : '../assets/avatar.png'
-        "
+        :src="$store.state.userInfo ? $store.state.userInfo.avatarUrl : ''"
       />
 
       <!-- 登录 modal start -->
