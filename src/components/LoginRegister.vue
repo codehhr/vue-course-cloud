@@ -7,43 +7,47 @@
       <!-- 分割线 -->
       <a-divider type="vertical" class="divider" />
       <!-- 登录/注册 -->
-      <a-dropdown v-show="userInfo.nickname" class="user-drop-menu">
+      <a-dropdown v-show="$store.state.alreadyLogin" class="user-drop-menu">
         <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
-          {{ userInfo.nickname }}
+          {{ $store.state.userInfo ? $store.state.userInfo.nickname : "" }}
         </a>
         <a-menu slot="overlay">
           <a-menu-item>
-            <a href="">个人中心</a>
+            <router-link :to="{ name: 'PersonalCenter' }">个人中心</router-link>
           </a-menu-item>
           <a-menu-item>
-            <a href="">退出登录</a>
+            <a @click="logOut">退出登录</a>
           </a-menu-item>
         </a-menu>
       </a-dropdown>
+
+      <!-- 登录/注册 按钮 -->
       <a-button
-        v-show="!userInfo.nickname"
+        v-show="!$store.state.alreadyLogin"
         class="login-register-btn"
         type="primary"
         @click="showLoginModal"
       >
         登录 / 注册
       </a-button>
+
       <!-- 头像 -->
       <a-avatar
         class="avatar"
         :src="
-          userInfo.avatarUrl ||
-            'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
+          $store.state.userInfo
+            ? $store.state.userInfo.avatarUrl
+            : '../assets/avatar.png'
         "
       />
 
-      <!-- 登录 start -->
+      <!-- 登录 modal start -->
       <a-modal v-model="loginVisible" :footer="null" style="text-align:center;">
         <a-tabs default-active-key="1">
           <a-tab-pane key="1" tab="普通登录">
             <a-form
               id="components-form-normal-login"
-              :form="normalForm"
+              :form="normalLoginForm"
               class="login-form"
               @submit="handleLoginSubmit"
             >
@@ -111,7 +115,7 @@
           <a-tab-pane key="2" tab="手机登录">
             <a-form
               id="components-form-tel-login"
-              :form="telForm"
+              :form="telLoginForm"
               class="login-form"
               @submit="handleSubmitWithTel"
             >
@@ -175,9 +179,9 @@
           </a-tab-pane>
         </a-tabs>
       </a-modal>
-      <!-- 登录 end -->
+      <!-- 登录 modal end -->
 
-      <!-- 注册 start -->
+      <!-- 注册 modal start -->
       <a-modal
         v-model="registerVisible"
         :footer="null"
@@ -338,14 +342,15 @@
           </a-button>
         </a-form>
       </a-modal>
-      <!-- 注册 end -->
+      <!-- 注册 modal end -->
     </div>
   </div>
   <!-- 登录注册入口 end -->
 </template>
 
 <script>
-import { login, getCode, register } from "../api/api";
+import { login, getCode, register, logOut } from "../api/api";
+// import {mapState,mapGetters} from "vuex"
 
 export default {
   name: "LoginRegister",
@@ -355,8 +360,7 @@ export default {
       loginVisible: false,
       // 显示注册模态框
       registerVisible: false,
-      // 用户信息
-      userInfo: {},
+
       // 注册 start
       confirmDirty: false,
       autoCompleteResult: [],
@@ -383,6 +387,9 @@ export default {
         },
       },
       // 注册 end
+
+      // 获取验证码定时器
+      getCodeInterval: null,
       getCodeBtnDisabled: false,
       hadRequestCode: false,
       second: 1 * 60,
@@ -403,13 +410,16 @@ export default {
     // 普通登录
     handleLoginSubmit(e) {
       e.preventDefault();
-      this.normalForm.validateFields((err, values) => {
+      this.normalLoginForm.validateFields((err, values) => {
         if (!err) {
           login(values.username, values.password).then((res) => {
             if (res.code == 0) {
-              this.userInfo = res.userInfo;
-              console.log(this.userInfo);
               this.loginVisible = false;
+              this.$message.success("登录成功");
+              this.$store.commit("setUserInfoAndLoginStatus", {
+                alreadyLogin: true,
+                userInfo: res.userInfo,
+              });
             } else {
               this.$message.warning("帐号或密码不正确");
             }
@@ -422,18 +432,36 @@ export default {
     // 手机登录
     handleSubmitWithTel(e) {
       e.preventDefault();
-      this.telForm.validateFields((err, values) => {
+      this.normalLoginForm.validateFields((err, values) => {
         if (!err) {
           login(values.username, values.password).then((res) => {
             if (res.code == 0) {
-              this.userInfo = res.userInfo;
               this.loginVisible = false;
+              this.$message.success("登录成功");
+              this.$store.commit("setUserInfoAndLoginStatus", {
+                alreadyLogin: true,
+                userInfo: res.userInfo,
+              });
             } else {
               this.$message.warning("帐号或密码不正确");
             }
           });
         } else {
           return;
+        }
+      });
+    },
+    // 退出登录
+    logOut() {
+      logOut().then((res) => {
+        if (res.code === 0) {
+          this.$message.success("已退出登录");
+          this.$store.commit("setUserInfoAndLoginStatus", {
+            alreadyLogin: false,
+            userInfo: null,
+          });
+        } else {
+          this.$message.error("错误");
         }
       });
     },
@@ -467,7 +495,7 @@ export default {
     compareToFirstPassword(rule, value, callback) {
       const form = this.registerForm;
       if (value && value !== form.getFieldValue("password")) {
-        callback("Two passwords that you enter is inconsistent!");
+        callback("两次密码输入不一致!");
       } else {
         callback();
       }
@@ -482,22 +510,21 @@ export default {
     },
     // 验证密码 end
 
-    // 注册 end
-
-    // 获取验证码
+    // 获取注册验证码
     getMobileCode() {
       let that = this;
+
+      // 获取验证码倒计时
       function countDown() {
         // 按钮禁用
         that.getCodeBtnDisabled = true;
 
         // 按钮倒计时 start
-        let getCodeInterval = null;
         that.hadRequestCode = true;
-        if (!getCodeInterval) {
-          getCodeInterval = setInterval(() => {
+        if (!that.getCodeInterval) {
+          that.getCodeInterval = setInterval(() => {
             if (that.second <= 0) {
-              clearInterval(getCodeInterval);
+              clearInterval(that.getCodeInterval);
               that.getCodeBtnDisabled = false;
               that.hadRequestCode = false;
             } else {
@@ -511,12 +538,12 @@ export default {
       // 获取验证码
       this.registerForm.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          if (values.mobile == "") {
+          if (values.mobile === "") {
             this.$message.warning("兄弟~空着呢 ~");
           } else {
             countDown();
             getCode(values.mobile).then((res) => {
-              if (res.code == 500) {
+              if (res.code === 500) {
                 this.$message.warning(res.msg);
               }
             });
@@ -524,10 +551,15 @@ export default {
         }
       });
     },
+
+    // 注册 end
   },
+
   beforeCreate() {
-    this.normalForm = this.$form.createForm(this, { name: "normal_login" });
-    this.telForm = this.$form.createForm(this, { name: "normal_login" });
+    this.normalLoginForm = this.$form.createForm(this, {
+      name: "normal_login",
+    });
+    this.telLoginForm = this.$form.createForm(this, { name: "normal_login" });
     this.registerForm = this.$form.createForm(this, { name: "register" });
   },
 };
@@ -538,10 +570,12 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   .login-register-entrance {
     .divider {
       margin-left: 10px;
     }
+
     .login-register-btn {
       padding: 0;
       width: 90px;
@@ -550,6 +584,7 @@ export default {
       border: none;
       box-shadow: none;
     }
+
     .user-drop-menu {
       width: 90px;
       color: #000000;
@@ -561,6 +596,7 @@ export default {
   width: 100%;
   height: 36px;
 }
+
 .login-form-footer {
   display: flex;
   align-items: center;
@@ -572,44 +608,56 @@ export default {
 @main-color: #00cf8c;
 
 .avatar {
+  position: relative;
+  top: -2px;
   margin: 0 10px;
   text-align: center;
   width: 40px;
   height: 40px;
   border-radius: 50%;
   overflow: hidden;
+
   img {
     width: 100%;
     height: 100%;
   }
 }
+
 .ant-modal {
   padding: 0 !important;
   width: 400px !important;
+
   .ant-modal-content {
     overflow: hidden;
+
     .ant-modal-body {
       padding: 10px 40px 0 !important;
+
       .go-to-register,
       .go-to-login {
         color: #000000a6;
         background-color: transparent;
         border: none;
         box-shadow: none;
+
         &:hover {
           color: @main-color;
         }
       }
+
       .ant-input-group .ant-input {
         border-radius: 0;
       }
+
       .get-code {
         min-width: 100px;
         color: #000000;
       }
+
       .register {
         width: 100%;
       }
+
       .go-to-login {
         margin: 10px;
         float: right;
