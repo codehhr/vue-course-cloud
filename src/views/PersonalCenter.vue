@@ -117,8 +117,6 @@ import PageHeader from "../components/PageHeader/PageHeader";
 import HeaderNav from "../components/PageHeader/HeaderNav";
 import PageFooter from "../components/PageFooter";
 
-import { getUserInfo } from "../api/api";
-
 export default {
   name: "PersonalCenter",
   data() {
@@ -145,26 +143,20 @@ export default {
     },
     // 更改头像
     handleChange(info) {
-      // if (info.file.status !== "uploading") {
-      //   console.log(info.file, info.fileList);
-      // }
-      if (info.file.status === "done") {
-        this.$message.success(`${info.file.name} 头像上传成功`);
-        this.$store.dispatch("checkAlreadyLogin");
-      } else if (info.file.status === "error") {
-        this.$message.error(`${info.file.name} 头像上传失败`);
+      if (this.$store.state.alreadyLogin) {
+        // if (info.file.status !== "uploading") {
+        //   console.log(info.file, info.fileList);
+        // }
+        if (info.file.status === "done") {
+          this.$message.success(`${info.file.name} 上传成功`);
+          this.$store.dispatch("checkAlreadyLogin");
+        } else if (info.file.status === "error") {
+          this.$message.error(`${info.file.name} 头像上传失败`);
+        }
+      } else {
+        this.$message.warning("请登录");
       }
     },
-    // 获取用户信息
-    getInfo() {
-      getUserInfo().then((res) => {
-        this.userInfo = res.userInfo;
-        console.log(this.userInfo);
-      });
-    },
-  },
-  created() {
-    this.getInfo();
   },
   components: {
     PageHeader,
@@ -245,17 +237,20 @@ export default {
         .upload {
           width: 200px;
           font-size: 0.8rem;
+
           &:hover {
             span {
               color: @main-color;
             }
           }
+
           .upload-btn {
             position: relative;
             left: -10px;
             margin: 10px auto;
             display: block;
           }
+
           span {
             font-size: 0.8rem;
             transition: color 0.4s;
