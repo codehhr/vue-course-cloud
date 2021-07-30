@@ -8,6 +8,18 @@
   </div>
 </template>
 
+<script>
+export default {
+  data() {
+    return {};
+  },
+  created() {
+    // 检查登录状态
+    this.$store.dispatch("checkAlreadyLogin");
+  },
+};
+</script>
+
 <style lang="less">
 * {
   margin: 0;
@@ -42,6 +54,7 @@ img {
 
 #nav {
   padding: 30px;
+
   a {
     font-weight: bold;
     color: #2c3e50;
