@@ -63,7 +63,7 @@ export function register(loginName, password, nickname, mobile, code) {
   return axios.post(`/api/pcUser/register`, formData);
 }
 
-//查看登录用户个人信息
+// 查看登录用户个人信息
 export function getUserInfo() {
   return axios.get("/courseapi/pcUser/login-user/info");
 }
