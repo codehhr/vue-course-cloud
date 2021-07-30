@@ -392,13 +392,16 @@ export default {
     };
   },
   methods: {
+    // 显示登录模态框
     showLoginModal() {
       this.loginVisible = true;
     },
+    // 去登录
     goToLogin() {
       this.registerVisible = false;
       this.loginVisible = true;
     },
+    // 去注册
     goToRegister() {
       this.loginVisible = false;
       this.registerVisible = true;
@@ -428,10 +431,10 @@ export default {
     // 手机登录
     handleSubmitWithTel(e) {
       e.preventDefault();
-      this.normalLoginForm.validateFields((err, values) => {
+      this.telLoginForm.validateFields((err, values) => {
         if (!err) {
           login(values.username, values.password).then((res) => {
-            if (res.code == 0) {
+            if (res.code === 0) {
               this.loginVisible = false;
               this.$message.success("登录成功");
               this.$store.commit("setUserInfoAndLoginStatus", {
@@ -456,7 +459,7 @@ export default {
             alreadyLogin: false,
             userInfo: null,
           });
-          this.$router.push("/")
+          this.$router.push("/");
         } else {
           this.$message.error("错误");
         }
@@ -510,7 +513,6 @@ export default {
     // 获取注册验证码
     getMobileCode() {
       let that = this;
-
       // 获取验证码倒计时
       function countDown() {
         // 按钮禁用
