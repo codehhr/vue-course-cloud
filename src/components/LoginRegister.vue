@@ -456,6 +456,7 @@ export default {
             alreadyLogin: false,
             userInfo: null,
           });
+          this.$router.push("/")
         } else {
           this.$message.error("错误");
         }
