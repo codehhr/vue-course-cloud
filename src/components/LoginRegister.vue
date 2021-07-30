@@ -38,7 +38,16 @@
       />
 
       <!-- 登录 modal start -->
-      <a-modal v-model="loginVisible" :footer="null" style="text-align:center;">
+      <a-modal
+        v-model="loginVisible"
+        :closable="false"
+        :footer="null"
+        :keyboard="false"
+        :maskClosable="false"
+        style="text-align:center;"
+      >
+        <a-icon @click="closeModal" class="modal-close-btn" type="close" />
+
         <a-tabs default-active-key="1">
           <a-tab-pane key="1" tab="普通登录">
             <a-form
@@ -180,10 +189,14 @@
       <!-- 注册 modal start -->
       <a-modal
         v-model="registerVisible"
+        :closable="false"
         :footer="null"
+        :keyboard="false"
+        :maskClosable="false"
         title="注 册"
         style="text-align:center;"
       >
+        <a-icon @click="closeModal" class="modal-close-btn" type="close" />
         <a-form :form="registerForm" @submit="handleRegisterSubmit">
           <a-form-item v-bind="formItemLayout" label="帐号">
             <a-input
@@ -627,8 +640,17 @@ export default {
   width: 400px !important;
 
   .ant-modal-content {
+    position: relative;
     overflow: hidden;
-
+    .modal-close-btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      cursor: pointer;
+    }
     .ant-modal-body {
       padding: 10px 40px 0 !important;
 
