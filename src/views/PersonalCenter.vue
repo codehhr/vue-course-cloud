@@ -19,7 +19,9 @@
             <div class="userinfo-item nickname">
               <span>昵称</span>
               <a class="change-userinfo" @click="showModal"> 修改 </a>
-              <p>{{ $store.state.userInfo.nickname }}</p>
+              <p>
+                {{ userInfo ? userInfo.nickname : "nickname" }}
+              </p>
               <a-modal
                 class="nickname-modal"
                 v-model="visible"
@@ -36,7 +38,9 @@
             <div class="userinfo-item mobile">
               <span>手机号</span>
               <a class="change-userinfo" @click="showModal"> 修改 </a>
-              <p>{{ $store.state.userInfo.mobile }}</p>
+              <p>
+                {{ userInfo ? userInfo.mobile : "mobile" }}
+              </p>
               <a-modal
                 class="nickname-modal"
                 v-model="visible"
@@ -71,9 +75,9 @@
               <div
                 class="large-avatar"
                 :style="
-                  'background: url(' +
-                    $store.state.userInfo.avatarUrl +
-                    ') center center no-repeat'
+                  `background: url('${
+                    userInfo ? userInfo.avatarUrl : ''
+                  }') center center no-repeat`
                 "
               ></div>
 
@@ -116,6 +120,7 @@
 import PageHeader from "../components/PageHeader/PageHeader";
 import HeaderNav from "../components/PageHeader/HeaderNav";
 import PageFooter from "../components/PageFooter";
+import { mapState } from "vuex";
 
 export default {
   name: "PersonalCenter",
@@ -162,6 +167,11 @@ export default {
     PageHeader,
     HeaderNav,
     PageFooter,
+  },
+  computed: {
+    ...mapState({
+      userInfo: "userInfo",
+    }),
   },
 };
 </script>
