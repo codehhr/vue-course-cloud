@@ -50,9 +50,6 @@ export default {
     courseDetailData: Object,
   },
   methods: {},
-  created() {
-    console.log(this.courseDetailData.sections);
-  },
 };
 </script>
 
