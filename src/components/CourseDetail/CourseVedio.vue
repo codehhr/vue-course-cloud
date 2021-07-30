@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    <img src="../../assets/livecourse/live1.png" alt="" />
+  </div>
 </template>
 
 <script>
