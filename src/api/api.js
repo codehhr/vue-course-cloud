@@ -72,10 +72,3 @@ export function getUserInfo() {
 export function logOut() {
   return axios.get("/api/pcUser/logout");
 }
-
-//更改头像
-export function changeUserAvatar(file) {
-  let formData = new FormData();
-  formData.append("file", file);
-  return axios.post("/courseapi/pcUser/updata/userAvatar", formData);
-}
