@@ -423,7 +423,7 @@ export default {
         if (!err) {
           login(values.username, values.password).then((res) => {
             if (res.code == 0) {
-              this.loginVisible = false;
+              this.$store.commit("setLoginVisible", false);
               this.$message.success("登录成功");
               this.$store.commit("setUserInfoAndLoginStatus", {
                 alreadyLogin: true,
@@ -469,7 +469,7 @@ export default {
             alreadyLogin: false,
             userInfo: null,
           });
-          this.$router.push("/");
+          this.$router.push({ path: "/" });
         } else {
           this.$message.error("错误");
         }
