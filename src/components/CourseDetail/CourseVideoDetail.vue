@@ -19,6 +19,9 @@
             <a-button class="free-play" type="primary">
               立即观看
             </a-button>
+            <a-button @click="collect" class="collection" icon="heart">
+              收藏
+            </a-button>
           </div>
           <div v-else class="discount">
             <span class="discount-price">
@@ -43,7 +46,7 @@
               <a-button class="btn" type="primary">
                 加入购物车
               </a-button>
-              <a-button class="collection" icon="heart">
+              <a-button @click="collect" class="collection" icon="heart">
                 收藏
               </a-button>
             </div>
@@ -56,10 +59,27 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "CourseVideoDetail",
   props: {
     courseDetailData: Object,
+  },
+  methods: {
+    // 点击收藏
+    collect() {
+      console.log(this.alreadyLogin);
+      if (this.alreadyLogin) {
+        this.$message.success("已收藏 ~");
+      } else {
+        this.$store.commit("setLoginVisible", true);
+      }
+    },
+  },
+  computed: {
+    ...mapState({
+      alreadyLogin: "alreadyLogin",
+    }),
   },
 };
 </script>
