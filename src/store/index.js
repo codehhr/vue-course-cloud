@@ -11,7 +11,9 @@ export default new Vuex.Store({
     alreadyLogin: false,
     // 用户信息
     userInfo: null,
+
     loginVisible: false,
+
     registerVisible: false,
   },
   // 同步修改全局状态
@@ -20,7 +22,7 @@ export default new Vuex.Store({
       state.loginVisible = payload;
     },
     setRegisterVisible(state, payload) {
-      state.RegisterVisible = payload;
+      state.registerVisible = payload;
     },
     setUserInfoAndLoginStatus(state, payload) {
       state.alreadyLogin = payload.alreadyLogin;

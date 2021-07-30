@@ -7,7 +7,7 @@
       <!-- 分割线 -->
       <a-divider type="vertical" class="divider" />
       <!-- 登录/注册 -->
-      <a-dropdown v-show="$store.state.alreadyLogin" class="user-drop-menu">
+      <a-dropdown v-show="alreadyLogin" class="user-drop-menu">
         <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
           {{ $store.state.userInfo ? $store.state.userInfo.nickname : "" }}
         </a>
@@ -23,7 +23,7 @@
 
       <!-- 登录/注册 按钮 -->
       <a-button
-        v-show="!$store.state.alreadyLogin"
+        v-show="!alreadyLogin"
         class="login-register-btn"
         type="primary"
         @click="showLoginModal"
@@ -32,10 +32,7 @@
       </a-button>
 
       <!-- 头像 -->
-      <a-avatar
-        class="avatar"
-        :src="$store.state.userInfo ? $store.state.userInfo.avatarUrl : ''"
-      />
+      <a-avatar class="avatar" :src="userInfo ? userInfo.avatarUrl : ''" />
 
       <!-- 登录 modal start -->
       <a-modal
@@ -358,18 +355,13 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { login, getCode, register, logOut } from "../api/api";
-// import {mapState,mapGetters} from "vuex"
 
 export default {
   name: "LoginRegister",
   data() {
     return {
-      // 显示登录模态框
-      loginVisible: false,
-      // 显示注册模态框
-      registerVisible: false,
-
       // 注册 start
       confirmDirty: false,
       autoCompleteResult: [],
@@ -407,17 +399,22 @@ export default {
   methods: {
     // 显示登录模态框
     showLoginModal() {
-      this.loginVisible = true;
+      this.$store.commit("setLoginVisible", true);
     },
-    // 去登录
-    goToLogin() {
-      this.registerVisible = false;
-      this.loginVisible = true;
+    //
+    closeModal() {
+      this.$store.commit("setLoginVisible", false);
+      this.$store.commit("setRegisterVisible", false);
     },
     // 去注册
     goToRegister() {
-      this.loginVisible = false;
-      this.registerVisible = true;
+      this.$store.commit("setLoginVisible", false);
+      this.$store.commit("setRegisterVisible", true);
+    },
+    // 去登录
+    goToLogin() {
+      this.$store.commit("setRegisterVisible", false);
+      this.$store.commit("setLoginVisible", true);
     },
     // 普通登录
     handleLoginSubmit(e) {
@@ -565,6 +562,15 @@ export default {
     },
 
     // 注册 end
+  },
+
+  computed: {
+    ...mapState({
+      alreadyLogin: "alreadyLogin",
+      userInfo: "userInfo",
+      loginVisible: "loginVisible",
+      registerVisible: "registerVisible",
+    }),
   },
 
   beforeCreate() {
