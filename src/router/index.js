@@ -30,7 +30,7 @@ const routes = [
   // 课程视频
   {
     path: "/course-detail/course-video",
-    name: "course-video",
+    name: "Course-video",
     component: CourseVideo,
   },
   // 个人中心
