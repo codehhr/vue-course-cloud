@@ -16,7 +16,7 @@
         <div class="price">
           <div class="free" v-if="courseDetailData.isFree == 1">
             <p>免费</p>
-            <a-button class="free-play" type="primary">
+            <a-button @click="playCourse" class="free-play" type="primary">
               立即观看
             </a-button>
             <a-button @click="collect" class="collection" icon="heart">
@@ -66,9 +66,16 @@ export default {
     courseDetailData: Object,
   },
   methods: {
+    // 点击观看
+    playCourse() {
+      if (this.alreadyLogin) {
+        this.$router.push({ path: "/coursevideo" });
+      } else {
+        this.$store.commit("setLoginVisible", true);
+      }
+    },
     // 点击收藏
     collect() {
-      console.log(this.alreadyLogin);
       if (this.alreadyLogin) {
         this.$message.success("已收藏 ~");
       } else {
