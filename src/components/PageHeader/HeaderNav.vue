@@ -14,7 +14,7 @@
           </a-menu-item>
         </a-menu>
       </a-dropdown>
-      <router-link to="/ExclusiveCourse">专属课程</router-link>
+      <router-link to="/exclusive-course">专属课程</router-link>
       <!-- 课程分类 end -->
     </nav>
     <!-- 顶部课程导航 end -->
