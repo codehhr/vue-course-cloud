@@ -124,12 +124,12 @@
               <a-form-item>
                 <a-input
                   v-decorator="[
-                    'username',
+                    'mobile',
                     {
-                      rules: [{ required: true, message: '请输入用户名' }],
+                      rules: [{ required: true, message: '请输入手机号' }],
                     },
                   ]"
-                  placeholder="用户名"
+                  placeholder="手机号"
                   autocomplete
                 >
                   <a-icon
@@ -139,25 +139,6 @@
                   />
                 </a-input>
               </a-form-item>
-              <!-- <a-form-item>
-                <a-input
-                  v-decorator="[
-                    'password',
-                    {
-                      rules: [{ required: true, message: '请输入验证码' }],
-                    },
-                  ]"
-                  type="text"
-                  placeholder="验证码"
-                  autocomplete
-                >
-                  <a-icon
-                    slot="prefix"
-                    type="lock"
-                    style="color: rgba(0,0,0,.25)"
-                  />
-                </a-input>
-              </a-form-item> -->
               <a-form-item v-bind="formItemLayout">
                 <a-row :gutter="24">
                   <a-col :span="20">
@@ -167,25 +148,26 @@
                         {
                           rules: [
                             {
-                              required: true,
                               message: '请输入验证码!',
                             },
                           ],
                         },
                       ]"
                       autocomplete
-                      placeholder="请输入验证码"
+                      placeholder="验证码"
                       title="请输入验证码"
                     />
                   </a-col>
                   <a-col :span="4">
                     <a-button
-                      :disabled="getCodeBtnDisabled"
+                      :disabled="loginCodeBtnDisabled"
                       class="get-code"
-                      @click="getMobileCode"
+                      @click="getLoginMobileCode"
                     >
-                      <span v-show="!hadRequestCode">获取验证码</span>
-                      <span v-show="hadRequestCode">{{ second }}</span>
+                      <span v-show="!hadRequestLoginCode">获取验证码</span>
+                      <span v-show="hadRequestLoginCode">{{
+                        loginSecond
+                      }}</span>
                     </a-button>
                   </a-col>
                 </a-row>
@@ -350,7 +332,6 @@
                     {
                       rules: [
                         {
-                          required: true,
                           message: '请输入验证码!',
                         },
                       ],
@@ -363,12 +344,14 @@
               </a-col>
               <a-col :span="12">
                 <a-button
-                  :disabled="getCodeBtnDisabled"
+                  :disabled="registerCodeBtnDisabled"
                   class="get-code"
-                  @click="getMobileCode"
+                  @click="getRegisterMobileCode"
                 >
-                  <span v-show="!hadRequestCode">获取验证码</span>
-                  <span v-show="hadRequestCode">{{ second }}</span>
+                  <span v-show="!hadRequestRegisterCode">获取验证码</span>
+                  <span v-show="hadRequestRegisterCode">{{
+                    registerSecond
+                  }}</span>
                 </a-button>
               </a-col>
             </a-row>
@@ -389,7 +372,14 @@
 
 <script>
 import { mapState } from "vuex";
-import { login, getCode, register, logOut } from "../api/api";
+import {
+  login,
+  loginWithTel,
+  getLoginCode,
+  getRegisterCode,
+  register,
+  logOut,
+} from "../api/api";
 
 export default {
   name: "LoginRegister",
@@ -422,11 +412,23 @@ export default {
       },
       // 注册 end
 
-      // 获取验证码定时器
-      getCodeInterval: null,
-      getCodeBtnDisabled: false,
-      hadRequestCode: false,
-      second: 1 * 60,
+      // 登录验证码定时器
+      loginCodeInterval: null,
+      // 获取验证码按钮禁用
+      loginCodeBtnDisabled: false,
+      // 已经请求验证码
+      hadRequestLoginCode: false,
+      // 请求验证码倒计时
+      loginSecond: 1 * 60,
+
+      // 获取注册验证码定时器
+      registerCodeInterval: null,
+      // 获取验证码按钮禁用
+      registerCodeBtnDisabled: false,
+      // 已经请求验证码
+      hadRequestRegisterCode: false,
+      // 请求验证码倒计时
+      registerSecond: 1 * 60,
     };
   },
   methods: {
@@ -455,7 +457,7 @@ export default {
       this.normalLoginForm.validateFields((err, values) => {
         if (!err) {
           login(values.username, values.password).then((res) => {
-            if (res.code == 0) {
+            if (res.code === 0) {
               this.$store.commit("setLoginVisible", false);
               this.$message.success("登录成功");
               this.$store.commit("setUserInfoAndLoginStatus", {
@@ -467,7 +469,7 @@ export default {
             }
           });
         } else {
-          return;
+          this.$message.warning("请填写完整 ~");
         }
       });
     },
@@ -476,20 +478,62 @@ export default {
       e.preventDefault();
       this.telLoginForm.validateFields((err, values) => {
         if (!err) {
-          login(values.username, values.password).then((res) => {
+          loginWithTel(values.mobile, values.code).then((res) => {
             if (res.code === 0) {
-              this.loginVisible = false;
+              this.$store.commit("setLoginVisible", false);
               this.$message.success("登录成功");
               this.$store.commit("setUserInfoAndLoginStatus", {
                 alreadyLogin: true,
                 userInfo: res.userInfo,
               });
             } else {
-              this.$message.warning("帐号或密码不正确");
+              this.$message.warning("填写不正确 ~");
             }
           });
         } else {
-          return;
+          this.$message.warning("请填写完整 ~");
+        }
+      });
+    },
+    // 获取登录验证码
+    getLoginMobileCode() {
+      let that = this;
+      // 获取验证码倒计时
+      function countDown() {
+        // 按钮禁用
+        that.loginCodeBtnDisabled = true;
+
+        // 按钮倒计时 start
+        that.hadRequestLoginCode = true;
+        if (!that.loginCodeInterval) {
+          that.loginCodeInterval = setInterval(() => {
+            if (that.loginSecond <= 0) {
+              clearInterval(that.loginCodeInterval);
+              that.loginCodeBtnDisabled = false;
+              that.hadRequestLoginCode = false;
+            } else {
+              that.loginSecond--;
+            }
+          }, 1000);
+        }
+        // 按钮倒计时 end
+      }
+
+      // 获取验证码
+      this.telLoginForm.validateFieldsAndScroll((err, values) => {
+        if (!err) {
+          getLoginCode(values.mobile).then((res) => {
+            if (res.code === 0) {
+              countDown();
+              this.$message.success("验证码已发送 ~")
+            } else {
+              if (res.code === 500) {
+                this.$message.warning(res.msg);
+              }
+            }
+          });
+        } else {
+          that.$message.warning("请输入手机号");
         }
       });
     },
@@ -497,12 +541,16 @@ export default {
     logOut() {
       logOut().then((res) => {
         if (res.code === 0) {
-          this.$message.success("已退出登录");
           this.$store.commit("setUserInfoAndLoginStatus", {
             alreadyLogin: false,
             userInfo: null,
           });
-          this.$router.push({ path: "/" });
+          if (this.$route.path === "/") {
+            this.$message.success("已退出登录");
+          } else {
+            this.$message.success("已退出登录");
+            this.$router.push({ path: "/" });
+          }
         } else {
           this.$message.error("错误");
         }
@@ -521,10 +569,12 @@ export default {
             values.mobile,
             values.code
           ).then((res) => {
-            if (res.code == 0) {
+            if (res.code === 0) {
               this.$message.success("注册成功");
             }
           });
+        } else {
+          this.$message.warning("请填写完整 ~");
         }
       });
     },
@@ -554,23 +604,23 @@ export default {
     // 验证密码 end
 
     // 获取注册验证码
-    getMobileCode() {
+    getRegisterMobileCode() {
       let that = this;
       // 获取验证码倒计时
       function countDown() {
         // 按钮禁用
-        that.getCodeBtnDisabled = true;
+        that.registerCodeBtnDisabled = true;
 
         // 按钮倒计时 start
-        that.hadRequestCode = true;
-        if (!that.getCodeInterval) {
-          that.getCodeInterval = setInterval(() => {
-            if (that.second <= 0) {
-              clearInterval(that.getCodeInterval);
-              that.getCodeBtnDisabled = false;
-              that.hadRequestCode = false;
+        that.hadRequestRegisterCode = true;
+        if (!that.registerCodeInterval) {
+          that.registerCodeInterval = setInterval(() => {
+            if (that.registerSecond <= 0) {
+              clearInterval(that.registerCodeInterval);
+              that.registerCodeBtnDisabled = false;
+              that.hadRequestRegisterCode = false;
             } else {
-              that.second--;
+              that.registerSecond--;
             }
           }, 1000);
         }
@@ -580,13 +630,18 @@ export default {
       // 获取验证码
       this.registerForm.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          if (values.mobile === "") {
-            this.$message.warning("兄弟~空着呢 ~");
+          if (!values.mobile) {
+            this.$message.warning("请填写完整 ~");
           } else {
-            countDown();
-            getCode(values.mobile).then((res) => {
-              if (res.code === 500) {
-                this.$message.warning(res.msg);
+            getRegisterCode(values.mobile).then((res) => {
+              if (res.code === 0) {
+                countDown();
+              } else {
+                if (res.msg.includes("nvalid")) {
+                  this.$message.warning("请规范输入手机号");
+                } else {
+                  this.$message.warning(res.msg);
+                }
               }
             });
           }

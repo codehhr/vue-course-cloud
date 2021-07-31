@@ -3,8 +3,8 @@ import VueRouter from "vue-router";
 import Index from "../views/Index";
 import ExclusiveCourse from "../components/ExclusiveCourse";
 import CourseDetail from "../views/CourseDetail";
-import store from "../store/index";
 import CourseVideo from "../components/CourseDetail/CourseVedio";
+import {getUserInfo} from "../api/api";
 
 Vue.use(VueRouter);
 
@@ -39,7 +39,7 @@ const routes = [
     name: "PersonalCenter",
     component: () => import("../views/PersonalCenter"),
     meta: {
-      requiredLogin: true,
+      requireLogin: true,
     },
   },
 ];
@@ -53,13 +53,14 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   // 判断是否是需要登录的页面
   // 再判断是否是登陆状态
-  if (to.path == "/personal-center") {
-    console.log(store.state.alreadyLogin);
-    if (!store.state.alreadyLogin) {
-      next("/");
-    } else {
-      next();
-    }
+  if (to.meta.requireLogin) {
+    getUserInfo().then((res) => {
+      if (res.code === 0) {
+        next();
+      } else {
+        next("/");
+      }
+    });
   } else {
     next();
   }

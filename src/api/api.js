@@ -47,8 +47,22 @@ export function login(username, password) {
   return axios.post(`/api/pcUser/login`, formData);
 }
 
+// 手机号登录
+export function loginWithTel(mobile, code) {
+  let formData = new FormData();
+  formData.append("mobile", mobile);
+  formData.append("code", code);
+  formData.append("rememberMe", false);
+  return axios.post(`/api/pcUser/login/mobile`, formData);
+}
+
+// 登录时发送验证码
+export function getLoginCode(mobile) {
+  return axios.get(`/api/pcUser/login/send/code/${mobile}`);
+}
+
 // 注册时发送验证码
-export function getCode(mobile) {
+export function getRegisterCode(mobile) {
   return axios.get(`/api/pcUser/register/send/code/${mobile}`);
 }
 
